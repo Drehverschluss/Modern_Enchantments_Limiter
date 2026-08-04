@@ -1,0 +1,13 @@
+{
+  "itemGroup.modern_enchantments_limiter": "Modern Enchantments Limiter Tab",
+  "block.modern_enchantments_limiter.example_block": "Example Block",
+  "item.modern_enchantments_limiter.example_item": "Example Item",
+
+  "modern_enchantments_limiter.configuration.title": "Modern Enchantments Limiter Configs",
+  "modern_enchantments_limiter.configuration.section.modern_enchantments_limiter.common.toml": "Modern Enchantments Limiter Configs",
+  "modern_enchantments_limiter.configuration.section.modern_enchantments_limiter.common.toml.title": "Modern Enchantments Limiter Configs",
+  "modern_enchantments_limiter.configuration.items": "Item List",
+  "modern_enchantments_limiter.configuration.logDirtBlock": "Log Dirt Block",
+  "modern_enchantments_limiter.configuration.magicNumberIntroduction": "Magic Number Text",
+  "modern_enchantments_limiter.configuration.magicNumber": "Magic Number"
+}
