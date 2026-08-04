@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.modernenchantmentslimiter.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EnchantmentHelperMixin",
+    "AnvilMenuMixin",
+    "ItemStackTooltipMixin",
+    "ItemStackSetEnchantmentsMixin"
+  ],
+  "client": [],
+  "server": []
+}
