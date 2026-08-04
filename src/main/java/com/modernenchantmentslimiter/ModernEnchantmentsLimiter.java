@@ -22,7 +22,7 @@ public class ModernEnchantmentsLimiter {
         // Registered via ConfigTracker directly (rather than ModContainer#registerConfig, which
         // does the same thing but discards the result) so we can keep the ModConfig reference
         // around for the /modernenchantmentslimiter reload command.
-        ModConfig.FML_CONFIG = net.neoforged.fml.config.ConfigTracker.INSTANCE.registerConfig(
-                net.neoforged.fml.config.ModConfig.Type.COMMON, ModConfig.SPEC, modContainer);
+        ModConfig.SERVER_FML_CONFIG = net.neoforged.fml.config.ConfigTracker.INSTANCE.registerConfig(
+                net.neoforged.fml.config.ModConfig.Type.SERVER, ModConfig.SERVER_SPEC, modContainer);
     }
 }

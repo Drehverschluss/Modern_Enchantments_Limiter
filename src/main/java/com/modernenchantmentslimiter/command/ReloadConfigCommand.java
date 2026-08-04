@@ -41,7 +41,7 @@ public final class ReloadConfigCommand {
     }
 
     private static int reload(CommandContext<CommandSourceStack> context) {
-        net.neoforged.fml.config.ModConfig fmlConfig = ModConfig.FML_CONFIG;
+        net.neoforged.fml.config.ModConfig fmlConfig = ModConfig.SERVER_FML_CONFIG;
         ILoadedConfig loadedConfig = fmlConfig == null ? null : fmlConfig.getLoadedConfig();
         if (loadedConfig == null) {
             context.getSource().sendFailure(Component.literal("Modern Enchantments Limiter config is not loaded yet."));
