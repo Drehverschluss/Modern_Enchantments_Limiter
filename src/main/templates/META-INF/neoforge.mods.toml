@@ -46,7 +46,7 @@ authors="${mod_authors}"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-A NeoForge mod that limits modern enchantments.
+Limits how many enchantments a single item can carry, based on a configurable base limit, item rarity bonuses, random variance, and per-tag/per-rarity overrides. Enforced on anvils, enchanting tables, and enchanted books, with a tooltip showing each item's current enchantment count against its limit.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
