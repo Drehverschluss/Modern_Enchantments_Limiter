@@ -24,4 +24,4 @@ Settings are split into two files, both under the global `config/` folder:
 
 Both are generated on startup (the moment the server/client starts). Both are hot-reloaded automatically when the file changes; if that doesn't pick up your edit (e.g. some editors/network drives, or a dedicated server), run `/modernenchantmentslimiter reload` in-game to force a re-read. 
 
-Note that server-config changes made while clients are already connected won't update their synced copy until they reconnect — the server itself always enforces the current live value regardless.
+Note that on a Dedicated Server the server-config changes made while clients are already connected won't update their synced copy until they reconnect — the server itself always enforces the current live value regardless.
