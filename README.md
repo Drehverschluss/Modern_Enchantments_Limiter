@@ -17,4 +17,10 @@ A tooltip line ("Enchantments: x/y") is shown directly under an item's enchantme
 
 ## Configuration
 
-All options live in `config/modern_enchantments_limiter-common.toml`, generated on first launch. The config is hot-reloaded automatically when the file changes; if that doesn't pick up your edit (e.g. some editors/network drives), run `/modernenchantmentslimiter reload` in-game to force a re-read.
+Settings are split into two files, both under the global `config/` folder:
+
+- **`config/modern_enchantments_limiter-server.toml`** – all gameplay values: base limit, rarity bonuses, random variance, min/max clamp, and tag/rarity overrides. This is the authoritative copy in multiplayer; it's synced to each client once when they connect, so a client's own copy never overrides the server's. (Advanced: a server admin can override it per-world by placing a copy in that world's `serverconfig/` folder instead.)
+- **`config/modern_enchantments_limiter-client.toml`** – just the cosmetic tooltip color.
+
+Both are generated on startup (the moment the server/client starts). Both are hot-reloaded automatically when the file changes; if that doesn't pick up your edit (e.g. some editors/network drives, or a dedicated server), run `/modernenchantmentslimiter reload` in-game to force a re-read. 
+Note that server-config changes made while clients are already connected won't update their synced copy until they reconnect — the server itself always enforces the current live value regardless.
