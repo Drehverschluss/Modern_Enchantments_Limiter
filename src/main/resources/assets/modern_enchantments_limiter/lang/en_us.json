@@ -15,6 +15,7 @@
   "modern_enchantments_limiter.configuration.minLimit": "Minimum Limit",
   "modern_enchantments_limiter.configuration.maxLimit": "Maximum Limit",
   "modern_enchantments_limiter.configuration.tagOverrides": "Tag Overrides",
+  "modern_enchantments_limiter.configuration.debugLogging": "Debug Logging",
   "modern_enchantments_limiter.configuration.tooltipColor": "Tooltip Color",
 
   "modern_enchantments_limiter.tooltip.enchantment_limit": "Enchantments: %s/%s",

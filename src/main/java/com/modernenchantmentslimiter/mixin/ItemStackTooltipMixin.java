@@ -48,9 +48,11 @@ public abstract class ItemStackTooltipMixin {
             return;
         }
 
-        int limit = EnchantmentLimitResolver.resolveLimit(self);
+        EnchantmentLimitResolver.Resolution resolution = EnchantmentLimitResolver.resolve(self);
+        int limit = resolution.limit();
         int current = EnchantmentLimitResolver.countEnchantments(self);
-        if (current <= 0) {
+        // with no enchantments, only show the line when a tagOverrides rule applies (e.g. a freshly reforged item)
+        if (current <= 0 && resolution.rule() == null) {
             return;
         }
 

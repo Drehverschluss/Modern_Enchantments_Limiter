@@ -55,7 +55,8 @@ public final class ModConfig {
     public static final ModConfigSpec.IntValue RANDOM_VARIANCE = SERVER_BUILDER
             .comment(
                 "Maximum random bonus (0 to this value, inclusive) added on top of the resolved limit.",
-                "The value is derived deterministically from the item and its current enchantments, so it stays stable as long as they don't change.",
+                "The value is derived deterministically from the item, the matching tagOverrides rule and (for Apotheosis items) its rarity and affixes.",
+                "It does not change when the item is enchanted, and is re-rolled when the item is reforged.",
                 "Set to 0 to disable."
             )
             .defineInRange("randomVariance", 0, 0, 64);
@@ -72,11 +73,19 @@ public final class ModConfig {
             .comment(
                 "Per-tag or per-rarity limit overrides. Entries are evaluated in order; the first match replaces the base limit before rarity/variance bonuses are applied.",
                 "Tag format: \"<item tag>;<value>\" for a fixed value, or \"<item tag>;<min>-<max>\" for a deterministic pseudo-random value in that range.",
+                "A range is derived from the item, the matching rule and (for Apotheosis items) its rarity and affixes. It does not change when the item is enchanted, and is re-rolled when the item is reforged.",
                 "Example: \"#c:tools/pickaxes;5\"",
                 "Apotheosis affix rarity format (no effect if Apotheosis isn't installed): \"apotheosis:rarity=<rarity id>;<value>\" or \"apotheosis:rarity=<rarity id>;<min>-<max>\".",
                 "Example: \"apotheosis:rarity=apotheosis:epic;5\""
             )
             .defineListAllowEmpty("tagOverrides", List.of(), () -> "", ModConfig::validateTagOverride);
+
+    public static final ModConfigSpec.BooleanValue DEBUG_LOGGING = SERVER_BUILDER
+            .comment(
+                "Logs how the limit was resolved every time enchantments are written to a limited item (for troubleshooting).",
+                "Only logs on the server side. Very verbose while enchanting - turn it off again after troubleshooting."
+            )
+            .define("debugLogging", false);
 
     public static final ModConfigSpec SERVER_SPEC = SERVER_BUILDER.build();
     public static final ModConfigSpec CLIENT_SPEC = CLIENT_BUILDER.build();
