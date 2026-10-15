@@ -38,3 +38,6 @@ run/
 **/src/generated/**/.cache/
 repo/
 !**/src/**/repo/
+
+### CurseForge (local-only, not for GitHub) ###
+CurseforgeSachen/
