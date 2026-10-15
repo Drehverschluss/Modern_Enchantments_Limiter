@@ -15,6 +15,13 @@ public sealed interface LimitRule permits TagLimitRule, ApotheosisRarityLimitRul
 
     int max();
 
+    /**
+     * Whether this rule's value (set with a leading {@code "="}, e.g.
+     * {@code "#tag;=5"} or {@code "#tag;=3-6"}) is an absolute limit, meaning
+     * the rarity bonus and random variance are not added on top.
+     */
+    boolean fixed();
+
     boolean matches(ItemStack stack);
 
     static Optional<LimitRule> tryParse(String raw) {

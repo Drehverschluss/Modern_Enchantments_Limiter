@@ -10,9 +10,12 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * A single parsed entry of the {@code tagOverrides} config list, in the form
- * {@code "<item tag>;<value>"} or {@code "<item tag>;<min>-<max>"}.
+ * {@code "<item tag>;<value>"} or {@code "<item tag>;<min>-<max>"}. Prefixing
+ * the value with {@code "="} (e.g. {@code "<item tag>;=<value>"} or
+ * {@code "<item tag>;=<min>-<max>"}) makes it an absolute limit: rarity bonus
+ * and random variance are not added on top.
  */
-public record TagLimitRule(TagKey<Item> tag, int min, int max) implements LimitRule {
+public record TagLimitRule(TagKey<Item> tag, int min, int max, boolean fixed) implements LimitRule {
 
     public static Optional<TagLimitRule> tryParse(String raw) {
         if (raw == null) {
@@ -35,7 +38,7 @@ public record TagLimitRule(TagKey<Item> tag, int min, int max) implements LimitR
         }
 
         return LimitRuleParsing.parseRange(parts[1].trim())
-                .map(range -> new TagLimitRule(TagKey.create(Registries.ITEM, tagId), range[0], range[1]));
+                .map(range -> new TagLimitRule(TagKey.create(Registries.ITEM, tagId), range.min(), range.max(), range.fixed()));
     }
 
     @Override

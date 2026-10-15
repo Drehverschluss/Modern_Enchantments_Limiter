@@ -66,7 +66,7 @@ public final class EnchantmentLimitResolver {
      * Breakdown of how a stack's limit was resolved. {@code rule} is the raw
      * {@code tagOverrides} line that matched, or {@code null} if none did.
      */
-    public record Resolution(int limit, @Nullable String rule, int roll, int rarityBonus, int variance) {}
+    public record Resolution(int limit, @Nullable String rule, int roll, int rarityBonus, int variance, boolean fixed) {}
 
     public static int resolveLimit(ItemStack stack) {
         return resolve(stack).limit();
@@ -81,18 +81,20 @@ public final class EnchantmentLimitResolver {
         EnchantmentLimit override = stack.get(ModDataComponents.ENCHANTMENT_LIMIT.get());
         if (override != null) {
             int value = Math.max(0, override.value());
-            return new Resolution(value, null, value, 0, 0);
+            return new Resolution(value, null, value, 0, 0, false);
         }
 
         int roll = ModConfig.BASE_LIMIT.get();
         String matchedRule = null;
         String seedBase = null;
+        boolean fixed = false;
 
         for (String raw : ModConfig.TAG_OVERRIDES.get()) {
             Optional<LimitRule> rule = LimitRule.tryParse(raw);
             if (rule.isPresent() && rule.get().matches(stack)) {
                 LimitRule r = rule.get();
                 matchedRule = raw;
+                fixed = r.fixed();
                 if (r.min() == r.max()) {
                     roll = r.min();
                 } else {
@@ -104,22 +106,24 @@ public final class EnchantmentLimitResolver {
         }
 
         int rarityBonus = 0;
-        if (ModConfig.USE_RARITY_BONUS.get()) {
-            // Base rarity, not ItemStack#getRarity(), which gets bumped once the item is enchanted.
-            rarityBonus = rarityBonus(stack.getOrDefault(DataComponents.RARITY, Rarity.COMMON));
-        }
-
         int variance = 0;
-        int maxVariance = ModConfig.RANDOM_VARIANCE.get();
-        if (maxVariance > 0) {
-            if (seedBase == null) {
-                seedBase = seedBase(stack, matchedRule);
+        if (!fixed) {
+            if (ModConfig.USE_RARITY_BONUS.get()) {
+                // Base rarity, not ItemStack#getRarity(), which gets bumped once the item is enchanted.
+                rarityBonus = rarityBonus(stack.getOrDefault(DataComponents.RARITY, Rarity.COMMON));
             }
-            variance = rollInRange(seedBase + "|variance", 0, maxVariance);
+
+            int maxVariance = ModConfig.RANDOM_VARIANCE.get();
+            if (maxVariance > 0) {
+                if (seedBase == null) {
+                    seedBase = seedBase(stack, matchedRule);
+                }
+                variance = rollInRange(seedBase + "|variance", 0, maxVariance);
+            }
         }
 
         int limit = Mth.clamp(roll + rarityBonus + variance, ModConfig.MIN_LIMIT.get(), ModConfig.MAX_LIMIT.get());
-        return new Resolution(limit, matchedRule, roll, rarityBonus, variance);
+        return new Resolution(limit, matchedRule, roll, rarityBonus, variance, fixed);
     }
 
     public static int countEnchantments(ItemStack stack) {
@@ -151,12 +155,12 @@ public final class EnchantmentLimitResolver {
 
         if (ModConfig.DEBUG_LOGGING.get() && EffectiveSide.get().isServer()) {
             ModernEnchantmentsLimiter.LOGGER.info(
-                    "MEL limit {} apoth_rarity={} rule={} roll={} rarity_bonus={} variance={} -> limit={}, before={}, incoming={}, kept={}",
+                    "MEL limit {} apoth_rarity={} rule={} roll={} rarity_bonus={} variance={} fixed={} -> limit={}, before={}, incoming={}, kept={}",
                     BuiltInRegistries.ITEM.getKey(stack.getItem()),
                     ApotheosisCompat.getRarityId(stack).map(ResourceLocation::toString)
                             .filter(id -> !id.equals("empty:empty")).orElse("none"),
                     resolution.rule() == null ? "none" : resolution.rule(),
-                    resolution.roll(), resolution.rarityBonus(), resolution.variance(),
+                    resolution.roll(), resolution.rarityBonus(), resolution.variance(), resolution.fixed(),
                     limit, before.size(), enchantments.size(), result.size()
             );
         }

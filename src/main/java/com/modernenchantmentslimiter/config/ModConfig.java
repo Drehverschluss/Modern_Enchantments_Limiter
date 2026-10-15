@@ -71,10 +71,13 @@ public final class ModConfig {
 
     public static final ModConfigSpec.ConfigValue<List<? extends String>> TAG_OVERRIDES = SERVER_BUILDER
             .comment(
-                "Per-tag or per-rarity limit overrides. Entries are evaluated in order; the first match replaces the base limit before rarity/variance bonuses are applied.",
+                "Per-tag or per-rarity limit overrides. Entries are evaluated in order; the first match replaces the base limit.",
+                "Rarity bonus and random variance are still added on top, unless the value starts with \"=\".",
                 "Tag format: \"<item tag>;<value>\" for a fixed value, or \"<item tag>;<min>-<max>\" for a deterministic pseudo-random value in that range.",
                 "A range is derived from the item, the matching rule and (for Apotheosis items) its rarity and affixes. It does not change when the item is enchanted, and is re-rolled when the item is reforged.",
                 "Example: \"#c:tools/pickaxes;5\"",
+                "Prefix the value with \"=\" for an absolute limit without rarity bonus and random variance: \"<item tag>;=<value>\" or \"<item tag>;=<min>-<max>\" (also works for apotheosis:rarity rules).",
+                "Example: \"#artifacts:artifacts;=1\"",
                 "Apotheosis affix rarity format (no effect if Apotheosis isn't installed): \"apotheosis:rarity=<rarity id>;<value>\" or \"apotheosis:rarity=<rarity id>;<min>-<max>\".",
                 "Example: \"apotheosis:rarity=apotheosis:epic;5\""
             )
